@@ -17,10 +17,10 @@ night_lights = [front_light, rear_light]
 
 night_lights_button = 33
 
-left_turn_front_light = None
-left_turn_rear_light = None
+left_turn_front_light = 7
+left_turn_rear_light = 12
 left_turn_lights = [left_turn_front_light, left_turn_rear_light]
-left_turn_lights_button = None
+left_turn_lights_button = 35
 
 right_turn_front_light = 11
 right_turn_rear_light = 16
@@ -34,8 +34,8 @@ blind_spot_lights = [left_blind_spot_light, right_blind_spot_light]
 # light_control_pins = night_lights + left_turn_lights + right_turn_lights + blind_spot_lights
 # button_pins = [night_lights_button, left_turn_lights_button, right_turn_lights_button]
 
-light_control_pins = night_lights + right_turn_lights
-button_pins = [night_lights_button, right_turn_lights_button]
+light_control_pins = night_lights + right_turn_lights + left_turn_lights
+button_pins = [night_lights_button, right_turn_lights_button, left_turn_lights_button]
 
 
     #############################
@@ -179,7 +179,7 @@ def init():
 
     GPIO.add_event_detect(night_lights_button, GPIO.FALLING, callback=toggle_night_lights, bouncetime=bouncetime_ms)
     GPIO.add_event_detect(right_turn_lights_button, GPIO.FALLING, callback=toggle_turn_lights, bouncetime=bouncetime_ms)
-    # GPIO.add_event_detect(left_turn_lights_button, GPIO.FALLING, callback=toggle_left_turn_lights, bouncetime=100)
+    GPIO.add_event_detect(left_turn_lights_button, GPIO.FALLING, callback=toggle_turn_lights, bouncetime=bouncetime_ms)
     # ===========================================
 
     # Settup threads

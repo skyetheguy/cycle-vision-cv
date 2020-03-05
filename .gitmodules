@@ -1,3 +1,6 @@
 [submodule "jetson-inference"]
 	path = jetson-inference
 	url = https://github.com/Zaki-Ahmed/jetson-inference.git
+[submodule "jetson-gpio"]
+	path = jetson-gpio
+	url = https://github.com/NVIDIA/jetson-gpio.git

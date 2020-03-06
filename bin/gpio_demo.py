@@ -9,42 +9,42 @@ import RPi.GPIO as GPIO
 
 # Time/delays
 # ---------------
-bouncetime_ms = 500
-turn_sig_flashtime_s = 0.5
-blind_spot_flashtime_s = 0.2
-callback_delay_s = 0.5
+BOUNCETIME_MS = 500
+TURN_SIG_FLASHTIME_S = 0.5
+BLIND_SPOT_FLASHTIME_S = 0.2
+CALLBACK_DELAY_S = 0.5
 
 # Main light pins
 # ---------------
-front_light = 13
-rear_light = 18
-night_lights = [front_light, rear_light]
-night_lights_button = 33
+FRONT_LIGHT = 13
+REAR_LIGHT = 18
+NIGHT_LIGHTS = [FRONT_LIGHT, REAR_LIGHT]
+NIGHT_LIGHTS_BUTTON = 33
 
 # Left turn sig pins
 # --------------------
-left_turn_front_light = 7
-left_turn_rear_light = 12
-left_turn_lights = [left_turn_front_light, left_turn_rear_light]
-left_turn_lights_button = 35
+LEFT_TURN_FRONT_LIGHT = 7
+LEFT_TURN_REAR_LIGHT = 12
+LEFT_TURN_LIGHTS = [LEFT_TURN_FRONT_LIGHT, LEFT_TURN_REAR_LIGHT]
+LEFT_TURN_LIGHTS_BUTTON = 35
 
 # Right turn sig pins
 # ---------------------
-right_turn_front_light = 11
-right_turn_rear_light = 16
-right_turn_lights = [right_turn_front_light, right_turn_rear_light]
-right_turn_lights_button = 37
+RIGHT_TURN_FRONT_LIGHT = 11
+RIGHT_TURN_REAR_LIGHT = 16
+RIGHT_TURN_LIGHTS = [RIGHT_TURN_FRONT_LIGHT, RIGHT_TURN_REAR_LIGHT]
+RIGHT_TURN_LIGHTS_BUTTON = 37
 
 # Blind spot pins
 # -----------------
-left_blind_spot_light = 15
-right_blind_spot_light = 19
-blind_spot_lights = [left_blind_spot_light, right_blind_spot_light]
+LEFT_BLIND_SPOT_LIGHT = 15
+RIGHT_BLIND_SPOT_LIGHT = 19
+BLIND_SPOT_LIGHTS = [LEFT_BLIND_SPOT_LIGHT, RIGHT_BLIND_SPOT_LIGHT]
 
 # Light and button pins (consists of pins above)
 # ----------------------
-light_control_pins = night_lights + left_turn_lights + right_turn_lights + blind_spot_lights
-button_pins = [night_lights_button, left_turn_lights_button, right_turn_lights_button]
+LIGHT_CONTROL_PINS = NIGHT_LIGHTS + LEFT_TURN_LIGHTS + RIGHT_TURN_LIGHTS + BLIND_SPOT_LIGHTS
+BUTTON_PINS = [NIGHT_LIGHTS_BUTTON, LEFT_TURN_LIGHTS_BUTTON, RIGHT_TURN_LIGHTS_BUTTON]
 
 
     #############################
@@ -73,16 +73,16 @@ def toggle_night_lights(channel):
 
     if night_lights_state:
         logging.info("Lights OFF")
-        for pin in night_lights:
+        for pin in NIGHT_LIGHTS:
             GPIO.output(pin, GPIO.LOW)
     else:
         logging.info("Lights ON")
-        for pin in night_lights:
+        for pin in NIGHT_LIGHTS:
             GPIO.output(pin, GPIO.HIGH)
 
     night_lights_state ^= True
 
-    time.sleep(callback_delay_s)
+    time.sleep(CALLBACK_DELAY_S)
 
 
 # Toggle front and rear turn lights callback
@@ -91,7 +91,7 @@ def toggle_turn_lights(channel):
     global left_turn_lights_state
     global turn_sig_event
 
-    if (channel == left_turn_lights_button):
+    if (channel == LEFT_TURN_LIGHTS_BUTTON):
         # Ensure both lights arent on at the same time
         if right_turn_lights_state:
             logging.info("Right turn sig OFF, Left ON")
@@ -108,7 +108,7 @@ def toggle_turn_lights(channel):
             turn_sig_event.set()
             blind_spot_event.set()
 
-    elif (channel == right_turn_lights_button):
+    elif (channel == RIGHT_TURN_LIGHTS_BUTTON):
         # Ensure both lights arent on at the same time
         if left_turn_lights_state:
             logging.info("Left turn sig OFF, Right ON")
@@ -125,7 +125,7 @@ def toggle_turn_lights(channel):
             turn_sig_event.set()
             blind_spot_event.set()
 
-    time.sleep(callback_delay_s)
+    time.sleep(CALLBACK_DELAY_S)
 
 
 
@@ -146,23 +146,23 @@ def flash_turn_sigs():
             while (right_turn_lights_state):
 
                 # Flash right LEDs
-                for pin in right_turn_lights:
+                for pin in RIGHT_TURN_LIGHTS:
                     GPIO.output(pin, GPIO.HIGH)
-                time.sleep(turn_sig_flashtime_s)
-                for pin in right_turn_lights:
+                time.sleep(TURN_SIG_FLASHTIME_S)
+                for pin in RIGHT_TURN_LIGHTS:
                     GPIO.output(pin, GPIO.LOW)
-                time.sleep(turn_sig_flashtime_s)
+                time.sleep(TURN_SIG_FLASHTIME_S)
 
         elif (left_turn_lights_state):
             while (left_turn_lights_state):
 
                 # Flash left LEDs
-                for pin in left_turn_lights:
+                for pin in LEFT_TURN_LIGHTS:
                     GPIO.output(pin, GPIO.HIGH)
-                time.sleep(turn_sig_flashtime_s)
-                for pin in left_turn_lights:
+                time.sleep(TURN_SIG_FLASHTIME_S)
+                for pin in LEFT_TURN_LIGHTS:
                     GPIO.output(pin, GPIO.LOW)
-                time.sleep(turn_sig_flashtime_s)
+                time.sleep(TURN_SIG_FLASHTIME_S)
 
 # Thread for flashing turn signal lights
 def flash_blind_spot():
@@ -180,26 +180,26 @@ def flash_blind_spot():
         while left_turn_lights_state or right_turn_lights_state:
             if left_turn_lights_state and left_blind_spot_light_state:
                 # Flash left warning LEDs
-                GPIO.output(left_blind_spot_light, GPIO.HIGH)
-                time.sleep(blind_spot_flashtime_s)
+                GPIO.output(LEFT_BLIND_SPOT_LIGHT, GPIO.HIGH)
+                time.sleep(BLIND_SPOT_FLASHTIME_S)
                
-                GPIO.output(left_blind_spot_light, GPIO.LOW)
+                GPIO.output(LEFT_BLIND_SPOT_LIGHT, GPIO.LOW)
 
             elif right_turn_lights_state and right_blind_spot_light_state:
                 # Flash righ warningt LEDs
-                GPIO.output(right_blind_spot_light, GPIO.HIGH)
-                time.sleep(blind_spot_flashtime_s)
+                GPIO.output(RIGHT_BLIND_SPOT_LIGHT, GPIO.HIGH)
+                time.sleep(BLIND_SPOT_FLASHTIME_S)
                
-                GPIO.output(right_blind_spot_light, GPIO.LOW)
+                GPIO.output(RIGHT_BLIND_SPOT_LIGHT, GPIO.LOW)
 
             # Sleep used for flashing AND not continuously polling blind spots not occupied
-            time.sleep(blind_spot_flashtime_s)
+            time.sleep(BLIND_SPOT_FLASHTIME_S)
 
         # Set light to solid ON if blind spot still occupied but turn sig off
         if left_blind_spot_light_state:
-            GPIO.output(left_blind_spot_light, GPIO.HIGH)
+            GPIO.output(LEFT_BLIND_SPOT_LIGHT, GPIO.HIGH)
         if right_blind_spot_light_state:
-            GPIO.output(right_blind_spot_light, GPIO.HIGH)
+            GPIO.output(RIGHT_BLIND_SPOT_LIGHT, GPIO.HIGH)
 
 
 
@@ -219,20 +219,20 @@ def init():
     GPIO.setmode(GPIO.BOARD)
 
     # LED pins set as output
-    GPIO.setup(light_control_pins, GPIO.OUT)
+    GPIO.setup(LIGHT_CONTROL_PINS, GPIO.OUT)
 
     # Button pins set as input
-    GPIO.setup(button_pins, GPIO.IN)
+    GPIO.setup(BUTTON_PINS, GPIO.IN)
     # ==========================================================
 
     # Pin Init
     # ===========================================
-    for pin in light_control_pins:
+    for pin in LIGHT_CONTROL_PINS:
         GPIO.output(pin, GPIO.LOW)
 
-    GPIO.add_event_detect(night_lights_button, GPIO.FALLING, callback=toggle_night_lights, bouncetime=bouncetime_ms)
-    GPIO.add_event_detect(right_turn_lights_button, GPIO.FALLING, callback=toggle_turn_lights, bouncetime=bouncetime_ms)
-    GPIO.add_event_detect(left_turn_lights_button, GPIO.FALLING, callback=toggle_turn_lights, bouncetime=bouncetime_ms)
+    GPIO.add_event_detect(NIGHT_LIGHTS_BUTTON, GPIO.FALLING, callback=toggle_night_lights, bouncetime=BOUNCETIME_MS)
+    GPIO.add_event_detect(RIGHT_TURN_LIGHTS_BUTTON, GPIO.FALLING, callback=toggle_turn_lights, bouncetime=BOUNCETIME_MS)
+    GPIO.add_event_detect(LEFT_TURN_LIGHTS_BUTTON, GPIO.FALLING, callback=toggle_turn_lights, bouncetime=BOUNCETIME_MS)
     # ===========================================
 
     # Settup threads
@@ -265,10 +265,10 @@ def update_blind_spot(side, occupied):
 
         if left_blind_spot_light_state:
             logging.info("Left blind OFF")
-            GPIO.output(left_blind_spot_light, GPIO.LOW)
+            GPIO.output(LEFT_BLIND_SPOT_LIGHT, GPIO.LOW)
         else:
             logging.info("Left blind  ON")
-            GPIO.output(left_blind_spot_light, GPIO.HIGH)
+            GPIO.output(LEFT_BLIND_SPOT_LIGHT, GPIO.HIGH)
 
         left_blind_spot_light_state ^= True
 
@@ -279,10 +279,10 @@ def update_blind_spot(side, occupied):
 
         if right_blind_spot_light_state:
             logging.info("Right blind OFF")
-            GPIO.output(right_blind_spot_light, GPIO.LOW)
+            GPIO.output(RIGHT_BLIND_SPOT_LIGHT, GPIO.LOW)
         else:
             logging.info("Right blind  ON")
-            GPIO.output(right_blind_spot_light, GPIO.HIGH)
+            GPIO.output(RIGHT_BLIND_SPOT_LIGHT, GPIO.HIGH)
 
         right_blind_spot_light_state ^= True
 

@@ -14,7 +14,7 @@ while display.IsOpen():
     img, width, height = camera.CaptureRGBA()
     detections = net.Detect(img, width, height)
     for detection in detections:
-		gpio.update_blind_spot("right", True)
+    	gpio.update_blind_spot("right", True)
     	print("Saw an object:    ")
     	print( detection.ClassID, detection.Area, detection.Center )
     	print("\n")

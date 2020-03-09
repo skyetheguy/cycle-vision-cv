@@ -29,8 +29,10 @@ while display.IsOpen():
     if counter > upper_thresh:
     	# gpio.update_blind_spot("right", True)
         print("---------------  LIGHT ON  ----------------")
+        print(counter)
     else:
     	# gpio.update_blind_spot("right", False)
         print("---------------  LIGHT OFF  ----------------")
+        print(counter)
     display.RenderOnce(img, width, height)
     display.SetTitle("Object Detection | Network {:.0f} FPS".format(net.GetNetworkFPS()))

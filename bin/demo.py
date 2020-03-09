@@ -7,7 +7,7 @@ camera = jetson.utils.gstCamera(640, 360, "0", "/home/c-vis/cycle-vision-cv/vide
 #camera = jetson.utils.gstCamera(1280, 720)
 display = jetson.utils.glDisplay()
 
-#gpio.init()
+gpio.init()
 counter = 0
 upper_thresh = 1
 lower_thresh = 0

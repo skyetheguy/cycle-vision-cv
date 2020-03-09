@@ -8,7 +8,7 @@ camera = jetson.utils.gstCamera(640, 360, "0", "/home/c-vis/cycle-vision-cv/vide
 display = jetson.utils.glDisplay()
 
 gpio.init()
-gpio.updateBlindSpot("left", True)
+gpio.update_blind_spot("left", True)
 
 while display.IsOpen():
     img, width, height = camera.CaptureRGBA()

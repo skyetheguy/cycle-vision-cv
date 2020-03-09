@@ -23,9 +23,9 @@ while display.IsOpen():
             counter = counter + 1 if counter < upper_ceil else upper_ceil
         else:
             counter = counter - 1 if counter > lower_ceil else lower_ceil
-    	print("Saw an object:    ")
-    	print( detection.ClassID, detection.Area, detection.Center )
-    	print("\n")
+    	# print("Saw an object:    ")
+    	# print( detection.ClassID, detection.Area, detection.Center )
+    	# print("\n")
     if counter > upper_thresh:
     	# gpio.update_blind_spot("right", True)
         print("---------------  LIGHT ON  ----------------")

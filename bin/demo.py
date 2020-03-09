@@ -33,11 +33,11 @@ while display.IsOpen():
     	# print( detection.ClassID, detection.Area, detection.Center )
     	# print("\n")
     if counter > upper_thresh:
-    	gpio.update_blind_spot("right", True)
+        gpio.update_blind_spot("right", True)
         print("---------------  LIGHT ON  ----------------")
         print(counter)
     else:
-    	gpio.update_blind_spot("right", False)
+        gpio.update_blind_spot("right", False)
         print("---------------  LIGHT OFF  ----------------")
         print(counter)
     display.RenderOnce(img, width, height)

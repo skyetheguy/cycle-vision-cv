@@ -13,6 +13,8 @@ upper_thresh = 2
 lower_thresh = 0
 upper_ceil = 10
 lower_ceil = 0 
+area_thresh = 500
+confidence_thresh = 0.25
 
 while display.IsOpen():
     img, width, height = camera.CaptureRGBA()
@@ -22,7 +24,8 @@ while display.IsOpen():
         counter = counter - 1 if counter > lower_ceil else lower_ceil
 
     for detection in detections:#detections in this frame
-        if detection.Confidence > 0.25 and detection.Area > 2000:
+
+        if detection.Confidence > confidence_thresh and detection.Area > area_thresh:
             counter = counter + 1 if counter < upper_ceil else upper_ceil
         # else:
             # counter = counter - 1 if counter > lower_ceil else lower_ceil

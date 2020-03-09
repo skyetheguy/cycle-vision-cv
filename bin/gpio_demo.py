@@ -2,6 +2,7 @@ import logging
 import threading
 import time
 import RPi.GPIO as GPIO
+import requests
 
     #############################
     ###       CONSTANTS       ###
@@ -45,6 +46,10 @@ BLIND_SPOT_LIGHTS = [LEFT_BLIND_SPOT_LIGHT, RIGHT_BLIND_SPOT_LIGHT]
 # ----------------------
 LIGHT_CONTROL_PINS = NIGHT_LIGHTS + LEFT_TURN_LIGHTS + RIGHT_TURN_LIGHTS + BLIND_SPOT_LIGHTS
 BUTTON_PINS = [NIGHT_LIGHTS_BUTTON, LEFT_TURN_LIGHTS_BUTTON, RIGHT_TURN_LIGHTS_BUTTON]
+
+# Phone app cam request addr
+CAMERA_STREAM_START = "http://localhost:41691/api/signal/true"
+CAMERA_STREAM_STOP = "http://localhost:41691/api/signal/false"
 
 
     #############################
@@ -101,12 +106,16 @@ def toggle_turn_lights(channel):
             logging.info("Left turn sig OFF")
 
             left_turn_lights_state = False
+
+            requests.get(url = CAMERA_STREAM_STOP)
         else:
             logging.info("Left turn sig ON")
 
             left_turn_lights_state = True
             turn_sig_event.set()
             blind_spot_event.set()
+
+            requests.get(url = CAMERA_STREAM_START) 
 
     elif (channel == RIGHT_TURN_LIGHTS_BUTTON):
         # Ensure both lights arent on at the same time
@@ -118,12 +127,16 @@ def toggle_turn_lights(channel):
             logging.info("Right turn sig OFF")
 
             right_turn_lights_state = False
+
+            requests.get(url = CAMERA_STREAM_STOP)
         else:
             logging.info("Right turn sig ON")
 
             right_turn_lights_state = True
             turn_sig_event.set()
             blind_spot_event.set()
+
+            requests.get(url = CAMERA_STREAM_START) 
 
     time.sleep(CALLBACK_DELAY_S)
 

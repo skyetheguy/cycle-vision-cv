@@ -22,7 +22,7 @@ while display.IsOpen():
         counter = counter - 1 if counter > lower_ceil else lower_ceil
 
     for detection in detections:#detections in this frame
-        if detection.Confidence > 0.4 and detection.Area > 5000:
+        if detection.Confidence > 0.25 and detection.Area > 2000:
             counter = counter + 1 if counter < upper_ceil else upper_ceil
         # else:
             # counter = counter - 1 if counter > lower_ceil else lower_ceil

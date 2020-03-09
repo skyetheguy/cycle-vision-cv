@@ -27,7 +27,7 @@ while display.IsOpen():
     	print("Saw an object:    ")
     	print( detection.ClassID, detection.Area, detection.Center )
     	print("\n")
-    if counter > upper:
+    if counter > upper_thresh:
     	gpio.update_blind_spot("right", True)
     else:
     	gpio.update_blind_spot("right", False)

@@ -1,6 +1,6 @@
 import jetson.inference
 import jetson.utils
-#import gpio_demo as gpio
+import gpio_demo as gpio
 
 net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.25)
 camera = jetson.utils.gstCamera(640, 360, "0", "/home/c-vis/cycle-vision-cv/videos/test.yuv")
@@ -33,11 +33,11 @@ while display.IsOpen():
     	# print( detection.ClassID, detection.Area, detection.Center )
     	# print("\n")
     if counter > upper_thresh:
-    	# gpio.update_blind_spot("right", True)
+    	gpio.update_blind_spot("right", True)
         print("---------------  LIGHT ON  ----------------")
         print(counter)
     else:
-    	# gpio.update_blind_spot("right", False)
+    	gpio.update_blind_spot("right", False)
         print("---------------  LIGHT OFF  ----------------")
         print(counter)
     display.RenderOnce(img, width, height)

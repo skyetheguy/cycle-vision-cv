@@ -18,11 +18,14 @@ while display.IsOpen():
     img, width, height = camera.CaptureRGBA()
     detections = net.Detect(img, width, height)
     
+    if len(detections) == 0:
+        counter = counter - 1 if counter > lower_ceil else lower_ceil
+
     for detection in detections:#detections in this frame
         if detection.Confidence > 0.4 and detection.Area > 5000:
             counter = counter + 1 if counter < upper_ceil else upper_ceil
-        else:
-            counter = counter - 1 if counter > lower_ceil else lower_ceil
+        # else:
+            # counter = counter - 1 if counter > lower_ceil else lower_ceil
     	# print("Saw an object:    ")
     	# print( detection.ClassID, detection.Area, detection.Center )
     	# print("\n")

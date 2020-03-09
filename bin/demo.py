@@ -9,11 +9,11 @@ display = jetson.utils.glDisplay()
 
 #gpio.init()
 counter = 0
-upper_thresh = 2
+upper_thresh = 1
 lower_thresh = 0
 upper_ceil = 10
 lower_ceil = 0 
-area_thresh = 500
+area_thresh = 100
 confidence_thresh = 0.25
 
 while display.IsOpen():

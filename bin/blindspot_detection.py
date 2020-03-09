@@ -8,16 +8,26 @@ camera = jetson.utils.gstCamera(640, 360, "0", "/home/c-vis/cycle-vision-cv/vide
 display = jetson.utils.glDisplay()
 
 gpio.init()
-gpio.update_blind_spot("right", True)
+counter = 0
+upper = 4
+lower = 0 
 
 while display.IsOpen():
     img, width, height = camera.CaptureRGBA()
     detections = net.Detect(img, width, height)
-    for detection in detections:
-    	gpio.update_blind_spot("right", True)
+    if len(detections) > 0:
+    	counter = counter + 1
+    else:
+    	counter = counter - 1 
+    	if counter < 0:
+    		counter = 0
+    for detection in detections:#detections in this frame
     	print("Saw an object:    ")
     	print( detection.ClassID, detection.Area, detection.Center )
     	print("\n")
-    gpio.update_blind_spot("right", False)
+    if counter > upper:
+    	gpio.update_blind_spot("right", True)
+    else:
+    	gpio.update_blind_spot("right", False)
     display.RenderOnce(img, width, height)
     display.SetTitle("Object Detection | Network {:.0f} FPS".format(net.GetNetworkFPS()))

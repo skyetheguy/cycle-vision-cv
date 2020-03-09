@@ -1,10 +1,13 @@
 import jetson.inference
 import jetson.utils
+import gpio_demo as gpio
 
-net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.2225)
-#camera = jetson.utils.gstCamera(640, 360, "0", "/home/c-vis/cycle-vision-cv/videos/test.yuv")
-camera = jetson.utils.gstCamera(1280, 720)
+net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.25)
+camera = jetson.utils.gstCamera(640, 360, "0", "/home/c-vis/cycle-vision-cv/videos/test.yuv")
+#camera = jetson.utils.gstCamera(1280, 720)
 display = jetson.utils.glDisplay()
+
+gpio.init()
 
 while display.IsOpen():
     img, width, height = camera.CaptureRGBA()
